@@ -1,8 +1,20 @@
 <?php
-	require_once('includes/conexion.php');
-	require('includes/busqueda-opciones.php');
+	require_once 'includes/Database.php';
+	require_once 'includes/Expositor.php';
+	require_once 'includes/Marca.php';
 
-	$opciones = opciones_busqueda();
+
+	$database = new Database();
+
+	$db = $database->connect();
+
+
+	$expositor = new Expositor($db);
+
+	$marca = new Marca($db);
+
+	$opciones = $marca->opciones_busqueda();
+
 ?>
 <!DOCTYPE html>
 <html>
