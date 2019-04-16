@@ -87,7 +87,10 @@ class Marca {
 		}
 	}
 
-
+	//--------------------------
+	// busqueda_marca_tabla() - Función para buscar el id seleccionado
+	//                          de la tabla de resultados
+	//-------------------------
 	public function busqueda_marca_tabla(){
 		$query = "SELECT * FROM " . $this->tabla . " WHERE idmarca = ?";
 		$stmt = $this->conn->prepare($query);
@@ -97,6 +100,11 @@ class Marca {
 		return $stmt;
 	}
 
+
+	//---------------------------
+	// busqueda_por_cat() : Método para obtener los registros de búsqueda
+	//                      por categoría seleccionada
+	//---------------------------
 	public function busqueda_por_cat(){
 		$query = "SELECT * FROM " . $this->tabla . " WHERE categoria = ?";
 		$stmt = $this->conn->prepare($query);
