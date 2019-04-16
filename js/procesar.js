@@ -37,7 +37,7 @@ $(document).ready(function(){
 		//---procesar form
 		$.ajax({
 			type: 'POST',
-			url: 'includes/procesar-busqueda.php',
+			url: 'controllers/procesar-busqueda.php',
 			data: formData,
 			dataType: 'json',
 			encode: true
@@ -177,12 +177,11 @@ function mostrarDatosBusqueda(data){
 		//---se agrega contenido dinámico a div de resultados procesados
 		$('#resultados-busqueda').html(
 			'<img class="img-logo-exp responsive" src="/marcas_logos/'+ data.logo +'">' +
-			'<h3>' + data.marca + '</h3>' +
+			'<h3>' + data.nombre + '</h3>' +
 			'<p><strong>Stand: </strong>' + data.stand + '</h3>' +
 			'<p><strong>Categoría:</strong> ' + data.categoria + '</p>' + 
 			'<p><strong>Dirección:</strong> ' + data.direccion + '</p>' +
 			'<p><strong>Teléfono:</strong> ' + data.telefono + '</p>' +
-			'<p><strong>Sitio web:</strong> ' + data.web + '</p>' + 
 			'<p><strong>Contacto:</strong> ' + data.contacto + '</p>'
 			);
 		$('#resultados-busqueda').scrollTop();
@@ -226,7 +225,7 @@ function CargarProductos()
 {
 		 $.ajax({
 				 type: "POST",
-				 url: 'includes/consulta.php',
+				 url: 'controllers/consulta-cat.php',
 				 success: function(resp){
 						 $('#categoria').html(resp);
 				 }

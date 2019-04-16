@@ -13,8 +13,10 @@ class Marca {
 	public $direccion;
 	public $telefono;
 	public $contacto;
-	public $web;
+	public $logo;
 	public $rutaImg;
+
+	public $tipo;
 
 	//---métodos de clase
 
@@ -26,26 +28,28 @@ class Marca {
 
 
 	//---busqueda_expositor - Búsqueda directa de expositor
-	public function busqueda_expositor($tipo,$nombreMarca){
-		if($tipo == "marca"){
-			$query = "SELECT * FROM " . $this->tabla . " WHERE nombre LIKE '%?%'";
+	public function busqueda_marca(){
+		if($this->tipo == "marca"){
+			//---como PDO omite % si se ponen directmanete, se tiene que concatenar % para que funcione
+			$query = "SELECT * FROM " . $this->tabla . " WHERE nombre LIKE CONCAT('%', ?, '%')";
 			$stmt = $this->conn->prepare($query);
 			$stmt->bindParam(1,$this->nombre);
 			$stmt->execute();
 
-			$cuenta = $stmt->count();
+			$cuenta = $stmt->rowCount();
 			if($cuenta >= 1){
 				return $stmt;
 			} else {
 				return false;
 			}
+
 		} else {
 			$query = "SELECT * FROM ". $this->tabla . " WHERE categoria LIKE '?' ";
 			$stmt = $this->conn->prepare($query);
 			$stmt->bindParam(1,$this->nombre);
 			$stmt->execute();
 
-			$cuenta = $stmt->count();
+			$cuenta = $stmt->rowCount();
 			if($cuenta >= 1){
 				return $stmt;
 			} else {
@@ -95,7 +99,7 @@ class Marca {
 		$query = "SELECT * FROM " . $this->tabla . " WHERE idmarca = ?";
 		$stmt = $this->conn->prepare($query);
 		$stmt = bindParam(1, $this->id_marca);
-		$stmt = execute();
+		$stmt->execute();
 
 		return $stmt;
 	}
@@ -119,7 +123,7 @@ class Marca {
 	public function obtener_directorio(){
 		$query = "SELECT * FROM " . $this->tabla;
 		$stmt = $this->conn->prepare($query);
-		$stmt = execute();
+		$stmt->execute();
 
 		return $stmt;
 	}
@@ -127,17 +131,27 @@ class Marca {
 	//---mostrar las opciones de búsuqeda de autocompletar
 	public function opciones_busqueda(){
 		$texto = '';
-		$query = "SELECT * FROM " . $this->tabla " ORDER BY nombre";
+		$query = "SELECT * FROM " . $this->tabla ." ORDER BY nombre";
 		$stmt = $this->conn->prepare($query);
-		$stmt = execute();
+		$stmt->execute();
 
-		$cuenta = $stmt->count();
-		if($cuenta => 1){
+		$cuenta = $stmt->rowCount();
+		if($cuenta >= 1){
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			$this->nombre = $row['nombre'];
 		}
 	}
 
+	//---opciones_categoria: Para mostrar los filtros por categoría
+	public function opciones_categoria(){
+		$query = "SELECT DISTINCT categoria FROM marca";
+		$stmt = $this->conn->prepare($query);
+		$stmt->execute();
+
+		while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+			echo '<option value="' .$row["categoria"]. '">' .$row["categoria"]. '</option>';
+		}
+	}
 }
 
 

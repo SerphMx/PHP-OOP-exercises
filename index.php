@@ -1,20 +1,5 @@
 <?php
-	require_once 'includes/Database.php';
-	require_once 'includes/Expositor.php';
-	require_once 'includes/Marca.php';
-
-
-	$database = new Database();
-
-	$db = $database->connect();
-
-
-	$expositor = new Expositor($db);
-
-	$marca = new Marca($db);
-
-	$opciones = $marca->opciones_busqueda();
-
+	require_once 'includes/init.php';
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'includes/Database.php';
-require_once 'includes/Expositor.php';
+
 require_once 'includes/Marca.php';
 
 
@@ -10,11 +10,17 @@ $database = new Database();
 $db = $database->connect();
 
 
-$expositor = new Expositor($db);
-
 $marca = new Marca($db);
 
-$opciones = $marca->opciones_busqueda();
+$marca->tipo = 'marca';
+$marca->nombre = 'Dina';
+$busqueda_marca = $marca->busqueda_marca();
+
+$detalle_marca = $busqueda_marca->fetch(PDO::FETCH_ASSOC);
+
+echo $detalle_marca['nombre'];
+
+
 
 // $mensaje = $marca->mensaje();
 
