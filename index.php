@@ -116,7 +116,7 @@
 <script type="text/javascript">
 	$(function() {
 		// Variable que recoge el resultado de la consulta sobre la tabla
-		let opcionesMarca = [<?php echo $opciones ?>];
+		let opcionesMarca = [<?php require_once('controllers/opciones-marca.php') ?>];
 		$("#textBuscaMarca").autocomplete({
 		source: opcionesMarca
 			});
