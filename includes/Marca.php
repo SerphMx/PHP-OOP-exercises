@@ -16,15 +16,10 @@ class Marca {
 	public $logo;
 	public $rutaImg;
 
-	//---categoría del tipo de búsqueda
 	public $tipo;
-	//---rango de búsqueda de las marcas
-	public $rango;
 
-
-	//-----------------------------------------
 	//---métodos de clase
-	//-----------------------------------------
+
 
 	//---constructor
 	public function __construct($db){
@@ -64,36 +59,29 @@ class Marca {
 	}
 
 	//---busqueda_alfabeto - Método que dependiendo la selección se muestran las marcas dentro de ese rango
-	public function busqueda_alfabeto(){
-		switch ($this->rango) {
+	public function busqueda_alfabeto($rango){
+		switch ($rango) {
 			case 1:
 				//---rango de búsqueda A-I
-				// $query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP '^[A-I] ORDER BY nombre ASC";
-				$query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP ? ORDER BY nombre ASC";
+				$query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP '^[A-I] ORDER BY nombre ASC";
 				$stmt = $this->conn->prepare($query);
-				$comodin = "^[A-I]";
-				$stmt->bindParam(1,$comodin,PDO::PARAM_STR);
-				$stmt->execute();
+				$stmt = execute();
 
 				return $stmt;
 				break;
 			case 2:
 				//---rango J-R
-				$query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP ? ORDER BY nombre ASC";
+				$query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP '^[J-R] ORDER BY nombre ASC";
 				$stmt = $this->conn->prepare($query);
-				$comodin = "^[J-R]";
-				$stmt->bindParam(1,$comodin,PDO::PARAM_STR);
-				$stmt->execute();
+				$stmt = execute();
 
 				return $stmt;
 				break;
 			case 3:
 				//---rango J-R
-				$query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP ? ORDER BY nombre ASC";
+				$query = "SELECT * FROM " . $this->tabla . " WHERE nombre REGEXP '^[J-R] ORDER BY nombre ASC";
 				$stmt = $this->conn->prepare($query);
-				$comodin = "^[S-Z]";
-				$stmt->bindParam(1,$comodin,PDO::PARAM_STR);
-				$stmt->execute();
+				$stmt = execute();
 
 				return $stmt;
 				break;
@@ -110,7 +98,7 @@ class Marca {
 	public function busqueda_marca_tabla(){
 		$query = "SELECT * FROM " . $this->tabla . " WHERE idmarca = ?";
 		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(1, $this->id_marca);
+		$stmt = bindParam(1, $this->id_marca);
 		$stmt->execute();
 
 		return $stmt;
@@ -124,7 +112,7 @@ class Marca {
 	public function busqueda_por_cat(){
 		$query = "SELECT * FROM " . $this->tabla . " WHERE categoria = ?";
 		$stmt = $this->conn->prepare($query);
-		$stmt->bindParam(1, $this->categoria);
+		$stmt = bindParam(1, $this->categoria);
 		$stmt->execute();
 
 		return $stmt;
@@ -142,20 +130,16 @@ class Marca {
 
 	//---mostrar las opciones de búsuqeda de autocompletar
 	public function opciones_busqueda(){
-		$marca = '';
+		$texto = '';
 		$query = "SELECT * FROM " . $this->tabla ." ORDER BY nombre";
 		$stmt = $this->conn->prepare($query);
 		$stmt->execute();
 
 		$cuenta = $stmt->rowCount();
 		if($cuenta >= 1){
-			while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$marca .= '"' . $row['nombre'] . '",';
-			}
-		} else {
-			$marca = 'Sin resultados';
+			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+			$this->nombre = $row['nombre'];
 		}
-		return $marca;
 	}
 
 	//---opciones_categoria: Para mostrar los filtros por categoría

@@ -134,7 +134,7 @@ $(document).ready(function(){
 function busquedaTabla(id){
 	$.ajax({
 		type: "GET",
-		url: 'controllers/procesar-busqueda-tabla.php?id=' + id,
+		url: 'includes/procesar-busqueda-tabla.php?id=' + id,
 		// data: id,
 		dataType: 'json',
 		encode: true
